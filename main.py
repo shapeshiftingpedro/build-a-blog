@@ -112,7 +112,9 @@ def new_post():
     db.session.add(post)
     db.session.commit()
 
-    return redirect("/blog")
+    the_post = post.id
+
+    return redirect("/blog?id=" + str(the_post))
 
 #def is_email(string):
  #   atsign_index = string.find('@')
