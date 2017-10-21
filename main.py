@@ -37,9 +37,8 @@ class Postings(db.Model):
 def get_post_list():
     return Postings.query.all()
 
-def get_post():
-    variable = 1
-    return Postings.query.filter_by(id=variable).first()
+
+   
 
 # @app.route("/register", methods=["POST","GET"])
 #def register():
@@ -85,8 +84,15 @@ def get_post():
 
 @app.route("/blog", methods=['GET'])
 def posts_list():
-    posts = get_post_list()
-    return render_template("post.html", posts=posts)
+    if request.args.get("id") == None:
+        posts = get_post_list()
+        return render_template("posts.html", posts=posts)        
+    else:
+        variable = int(request.args.get("id"))
+        single_post = Postings.query.filter_by(id=variable).first()
+        return render_template("post.html", post=single_post)
+        
+
 
 @app.route("/newpost", methods=["GET"])
 def load_new_post():
@@ -126,7 +132,7 @@ def new_post():
 @app.route("/")
 def index():
     encoded_error = request.args.get("error")
-    return render_template('post.html', error=encoded_error and cgi.escape(encoded_error, quote=True))
+    return render_template('posts.html', error=encoded_error and cgi.escape(encoded_error, quote=True))
 
 
 #endpoints_without_login = ['login', 'register']
